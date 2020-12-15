@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8" /><title>Charts - ETF50</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />    
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/bootstrap-responsive.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/font-awesome.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/adminia.css') }}" rel="stylesheet" /> 
+    <link href="{{ url_for('static', filename='css/adminia-responsive.css') }}" rel="stylesheet" /> 
+    <script src="{{ url_for('static', filename='js/plotly.min.js') }}" ></script>
+     <script language="JavaScript" src="../static/js/jquery.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<body>
+<!--页面头部-->
+<div class="navbar navbar-fixed-top"><div class="navbar-inner">
+			<div class="container">
+	         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> 
+				<span class="icon-bar"></span></a>
+		   	<a class="brand" href="./">股票数据可视化系统</a></div> <!-- /container -->
+</div> <!-- /navbar-inner --></div> <!-- /navbar -->
+
+<div id="content">
+	<div class="container">
+		<div class="row">
+			<div class="span3">
+				<form action="/search" method="POST" >
+					<!--股票信息输入框-->
+					<div class="account-container">
+						<div class="account-details">
+							<span class="account-name">可视化类型
+								<select id="stock" name="graph_type" onchange="fctCheck(this.value);">
+									<option>半年线图</option>
+									<option>k线图</option>
+									<option>高低点</option>
+									<option>振幅对比</option>
+									<option>市盈率</option>
+									<option>AH股价比</option>
+								</select>
+							</span>
+                            <select id="k线图" name="period" class="subselector" style="display:none">
+                                <option value="日k">日k</option>
+                                <option value="周k">周k</option>
+                                <option value="月k">月k</option>
+                            </select>
+
+                            <select id="市盈率" name="type" class="subselector" style="display:none">
+                                <option value="LYR">LYR</option>
+                                <option value="TTM">TTM</option>
+                            </select>
+                            <span id="振幅对比" class="subselector" style="display:none" >对比股票代码<input type="text" name="stock_id2" maxlength="6"></span>
+                            <span class="account-name">股票代码<input type="text" name="stock_id" maxlength="6"></span>
+							<span class="account-name">开始日期<input type="date" name="start_date"></span>
+							<span class="account-name">结束日期 <input type="date" name="end_date"></span>
+
+						</div> <!-- /account-details -->
+					</div> <!-- /account-container --><hr />
+
+
+					<button type="submit" class="btn btn-primary">绘制图形</button>
+				</form>
+				
+				<div class="sidebar-extra"><p>此web应用程序使用了以下Python第三方库：</p>
+                    <ul><li>Plotly -- 数据可视化库</li><li>Pandas -- 数据处理及分析库</li> 
+                        <li>Tushare -- 财经数据接口库</li><li>Flask --  Web应用框架</li></ul>
+				</div><br />
+             </div> <!-- /span3 -->
+			<div class="span9">
+                <div class="widget">
+					<div class="widget-content">
+                        <div class='graph'>{{context.graph |safe }}</div>
+                    </div>
+                </div>
+            </div> <!-- /span9 -->
+        </div><!-- /row -->
+    </div> <!-- /container -->
+</div> <!-- /content -->
+
+    <script>
+     function fctCheck(food)
+     {
+         var elems = document.getElementsByClassName("subselector");
+         console.log(elems)
+         for (var i = 0; i < elems.length; i++) {
+          elems.item(i).style.display = "none";
+         }
+         document.getElementById(food).style.display = "block";
+     }
+     </script>
+</body>
+</html>
