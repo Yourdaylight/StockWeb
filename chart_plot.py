@@ -1,25 +1,16 @@
-## For more details, please see the example 9-8 in book of
-#  "Python Programming" by ChenChunHui.
-#  JamesYe 2019-9-10 Happy Teacher's Day
-#  JamesYe 2019-10-04 Happy National Day
 
 from datetime import datetime
 import tushare as ts
 import pandas as pd
-import plotly as py  #plotly适合网页绘图 please see Page 158.
+import plotly as py
 import plotly.graph_objs as go
 pyplt = py.offline.plot
-
-
 #读取股票代码与名称字典
 ts.set_token('b94ecd1e37a3628890e89b90e0259b6db72b0ae0b17dadd2c28c5c4c')
 pro = ts.pro_api()
 
 df=pd.read_csv("stock_code.csv")
 # df = pro.daily(ts_code='000001.sz', start_date='20190701', end_date='20190930')#直接保存
-
-
-
 
 class Chart_Plot:
     def __init__(self,start_date,end_date,stock1="000001",stock2="000002"):
