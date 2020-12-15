@@ -18,15 +18,19 @@ class Chart_Plot:
         self.start_date=start_date.replace("-","")
         self.end_date=end_date.replace("-","")
         #获取指定股票代码的名称
-        temp=df.loc[df.ts_code.str.contains(stock1)]
-        self.stock1_code=temp["ts_code"].values[0]
-        self.stock1=pro.daily(ts_code=self.stock1_code, start_date=start_date, end_date=end_date)
-        self.name1=temp['name'].values[0]
-        #获取要对比的股票代码的名称
-        temp = df.loc[df.ts_code.str.contains(stock2)]
-        self.stock2_code = temp["ts_code"].values[0]
-        self.stock2=pro.daily(ts_code=self.stock2_code, start_date=start_date, end_date=end_date)
-        self.name2=temp['name'].values[0]
+        try:
+            temp=df.loc[df.ts_code.str.contains(stock1)]
+            self.stock1_code=temp["ts_code"].values[0]
+            self.stock1=pro.daily(ts_code=self.stock1_code, start_date=start_date, end_date=end_date)
+            self.name1=temp['name'].values[0]
+            #获取要对比的股票代码的名称
+            temp = df.loc[df.ts_code.str.contains(stock2)]
+            self.stock2_code = temp["ts_code"].values[0]
+            self.stock2=pro.daily(ts_code=self.stock2_code, start_date=start_date, end_date=end_date)
+            self.name2=temp['name'].values[0]
+            print(self.stock1)
+        except:
+            return
 
     def candle_stick(self,period="day"):#日K线图
         #默认获取日k,如果period不为日k，则获取对应值
@@ -48,9 +52,9 @@ class Chart_Plot:
                                       close = self.stock1.close,
                                       increasing=dict(line=dict(color= '#ff0000')),
                                       decreasing=dict(line=dict(color= '#00ff00')),
-                                      name = self.stock1['ts_code'].values[0])
+                                      name = self.name1)
         candle_data = [candle_trace]
-        candle_layout = {'title': self.stock1['ts_code'][0],'yaxis': {'title': '价格'}}
+        candle_layout = {'title': self.name1,'yaxis': {'title': '价格'}}
         candle_fig = dict(data=candle_data, layout=candle_layout)
         div = pyplt(candle_fig, output_type='div', include_plotlyjs=False, auto_open=False, show_link=False)
         return div
@@ -76,7 +80,7 @@ class Chart_Plot:
         #[Scatter({'x': [2019-09-30 00:00:00, 2019-09-27 00:00:00.....
                 
         layout = dict(
-              title=self.stock1['ts_code'].values[0]+":"+self.name1,
+              title=self.name1,
               xaxis=dict(title='日期'),
               yaxis=dict(title='价格')
               )
