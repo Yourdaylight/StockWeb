@@ -13,24 +13,22 @@ df=pd.read_csv("stock_code.csv")
 # df = pro.daily(ts_code='000001.sz', start_date='20190701', end_date='20190930')#直接保存
 
 class Chart_Plot:
+    global pro,df
     def __init__(self,start_date,end_date,stock1="000001",stock2="000002"):
         #处理参数格式，符合tushare调用规范
         self.start_date=start_date.replace("-","")
         self.end_date=end_date.replace("-","")
         #获取指定股票代码的名称
-        try:
-            temp=df.loc[df.ts_code.str.contains(stock1)]
-            self.stock1_code=temp["ts_code"].values[0]
-            self.stock1=pro.daily(ts_code=self.stock1_code, start_date=start_date, end_date=end_date)
-            self.name1=temp['name'].values[0]
-            #获取要对比的股票代码的名称
-            temp = df.loc[df.ts_code.str.contains(stock2)]
-            self.stock2_code = temp["ts_code"].values[0]
-            self.stock2=pro.daily(ts_code=self.stock2_code, start_date=start_date, end_date=end_date)
-            self.name2=temp['name'].values[0]
-            print(self.stock1)
-        except:
-            return
+        temp=df.loc[df.ts_code.str.contains(stock1)]
+        self.stock1_code=temp["ts_code"].values[0]
+        self.stock1=pro.daily(ts_code=self.stock1_code, start_date=self.start_date, end_date=self.end_date)
+        self.name1=temp['name'].values[0]
+        #获取要对比的股票代码的名称
+        temp = df.loc[df.ts_code.str.contains(stock2)]
+        self.stock2_code = temp["ts_code"].values[0]
+        self.stock2=pro.daily(ts_code=self.stock2_code, start_date=self.start_date, end_date=self.end_date)
+        self.name2=temp['name'].values[0]
+
 
     def candle_stick(self,period="day"):#日K线图
         #默认获取日k,如果period不为日k，则获取对应值
@@ -38,6 +36,8 @@ class Chart_Plot:
             self.stock1=pro.weekly(ts_code=self.stock1_code,start_date=self.start_date,end_date=self.end_date)
         elif period=="月k":
             self.stock1 = pro.monthly(ts_code=self.stock1_code, start_date=self.start_date, end_date=self.end_date)
+
+
 
         strdate =self.stock1['trade_date'].tolist()
         #日期字符串转时间序列
