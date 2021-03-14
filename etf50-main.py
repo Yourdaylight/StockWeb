@@ -34,7 +34,7 @@ def get_value():
     start_date = request.form.get("start_date")
     end_date = request.form.get("end_date")
     # 判断用户选择的日期，若没有选择开始日期，默认绘制最近一年的数据
-    start_date = getdate(365) if start_date == "" else start_date
+    start_date = getdate(185) if start_date == "" else start_date
     end_date = getdate(1) if end_date == "" else end_date
     # 判断用户输入的股票id，如果为空，默认为000001
     stock_id = stock_id if stock_id else "000001"
@@ -42,6 +42,7 @@ def get_value():
 
     period = request.form.get("period")
     index_type = request.form.get("type")
+    a_h = request.form.get("A/H")
     return {
         "graph_type": graph_type,
         "stock_id": stock_id,
@@ -49,7 +50,8 @@ def get_value():
         "start_date": start_date,
         "end_date": end_date,
         "period": period,
-        "index_type": index_type
+        "index_type": index_type,
+        "a_h": a_h
     }
 
 
@@ -68,14 +70,17 @@ def search():
     # 创建绘图对象
     chart = Chart_Plot(**values)
     if graph_type == "半年线图":
-        context['graph'] = chart.twoline_graph()
+        context['graph'], context["title"] = chart.twoline_graph()
     elif graph_type == "k线图":
-        context['graph'] = chart.candle_stick(values.get("period"))
+        context['graph'], context["title"] = chart.candle_stick(values.get("period"))
     elif graph_type == "高低点":
-        context['graph'] = chart.high_low()
+        context['graph'], context["title"] = chart.high_low()
     elif graph_type == "市盈率":
-        context['graph'] = chart.plot_pes()
-
+        context['graph'], context["title"] = chart.plot_pes()
+    elif graph_type == "振幅对比":
+        context['graph'], context["title"] = chart.plot_amplitude()
+    elif graph_type == "AH股价比":
+        context['graph'], context["title"] = chart.plot_ah()
     return render_template("chars.html", title='Home', context=context)
 
 

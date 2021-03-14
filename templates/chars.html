@@ -47,8 +47,13 @@
                                 <option value="LYR">LYR</option>
                                 <option value="TTM">TTM</option>
                             </select>
+                            <select id="AH股价比" name="A/H" class="subselector" style="display:none">
+                                <option value="A/H">A股转H股</option>
+                                <option value="H/A">H股转A股</option>
+                            </select>
+
                             <span id="振幅对比" class="subselector" style="display:none" >对比股票代码<input type="text" name="stock_id2" maxlength="6"></span>
-                            <span class="account-name">股票代码<input type="text" name="stock_id" maxlength="6"></span>
+                            <span class="account-name">股票代码<input type="text" name="stock_id" maxlength="6" value="000001"></span>
 							<span class="account-name">开始日期<input type="date" name="start_date"></span>
 							<span class="account-name">结束日期 <input type="date" name="end_date"></span>
 
@@ -66,7 +71,8 @@
 			<div class="span9">
                 <div class="widget">
 					<div class="widget-content">
-                        <div class='graph'>{{context.graph |safe }}</div>
+                        <h3 class="graph-title">{{context.title}}</h3>
+                        <div class='graph' style="color: red">{{context.graph |safe }}</div>
                     </div>
                 </div>
             </div> <!-- /span9 -->
