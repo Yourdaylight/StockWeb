@@ -13,7 +13,6 @@ from flask import request
 
 app = Flask(__name__)
 
-chart = Chart_Plot(start_date="20200101", end_date="20201101")
 context = {}  # 字典
 
 
@@ -62,7 +61,6 @@ def index():
         "end_date":getdate(0),
         "graph_type":"半年线图"
     }
-
     chart = Chart_Plot(**values)
     context['graph'], context['title'] = chart.twoline_graph()
     return render_template("chars.html", title='Home', context=context)
