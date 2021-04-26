@@ -57,7 +57,14 @@ def get_value():
 
 @app.route('/', methods=["POST", "GET"])
 def index():
-    context['graph'] = chart.twoline_graph()
+    values={
+        "start_date":getdate(180),
+        "end_date":getdate(0),
+        "graph_type":"半年线图"
+    }
+
+    chart = Chart_Plot(**values)
+    context['graph'], context['title'] = chart.twoline_graph()
     return render_template("chars.html", title='Home', context=context)
 
 

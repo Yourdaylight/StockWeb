@@ -7,7 +7,7 @@ import traceback
 import tushare as ts
 
 # tushare pro的token以及定义pro 具体见tushare pro官网
-token = '7f57fc481d8b6b1b13920cd996b2d1047723cdaf9d747ad9be4ef8ac'
+token = '3a7b16afc8abe0f35ee81254c6740d3e868bed2f97e612709fb6acc1'
 pro = ts.pro_api(token)
 # 聚合数据API接口
 appkey = 'fe74b7a9756a5242db9d5e68061c4426'
