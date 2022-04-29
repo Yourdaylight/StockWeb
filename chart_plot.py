@@ -10,7 +10,7 @@ pyplt = py.offline.plot
 pro = tool.get_pro()
 
 
-# 读取股票代码与名称字典
+# 读取基金代码与名称字典
 # ts.set_token('b94ecd1e37a3628890e89b90e0259b6db72b0ae0b17dadd2c28c5c4c')
 # pro = ts.pro_api()
 # df = pd.read_csv("stock_code.csv")
@@ -26,11 +26,11 @@ class Chart_Plot:
         # pdb.set_trace()
         self.start_date = params.get("start_date").replace("-", "")
         self.end_date = params.get("end_date").replace("-", "")
-        # 获取指定股票代码的名称
+        # 获取指定基金代码的名称
         self.stock1_code = tool.getStockCode(params.get("stock_id", "000001"))
         self.name1 = tool.getName(self.stock1_code)
         self.stock1 = None
-        # 获取要对比的股票代码的名称
+        # 获取要对比的基金代码的名称
         self.stock2_code = tool.getStockCode(params.get("stock_id2", "000002"))
         self.stock2 = pro.daily(ts_code=self.stock2_code, start_date=self.start_date, end_date=self.end_date)
         self.name2 = tool.getName(self.stock2_code)
@@ -44,7 +44,7 @@ class Chart_Plot:
         # 默认获取日k,如果period不为日k，则获取对应值
         try:
             if not self.stock1_code:
-                return "该股票代码不存在", self.graph_title
+                return "该基金代码不存在", self.graph_title
             if period == "周k":
                 self.stock1 = pro.weekly(ts_code=self.stock1_code, start_date=self.start_date, end_date=self.end_date)
             elif period == "月k":
@@ -76,7 +76,7 @@ class Chart_Plot:
         # self.stock1['close']取出来的值都是带有索引值的两列的矩阵，具体看excl表格
         # tolist函数则将他们变为列表，除去索引值
         if not self.stock1_code:
-            return "该股票代码不存在", self.graph_title
+            return "该基金代码不存在", self.graph_title
         self.stock1 = pro.daily(ts_code=self.stock1_code, start_date=self.start_date, end_date=self.end_date)
         close = self.stock1['close'].tolist()
         strdate = self.stock1['trade_date'].tolist()
@@ -87,7 +87,6 @@ class Chart_Plot:
             y=close
         )]
         layout = dict(
-            title=self.name1,
             xaxis=dict(title='日期'),
             yaxis=dict(title='价格')
         )
@@ -98,7 +97,7 @@ class Chart_Plot:
 
     def high_low(self):
         if not self.stock1_code:
-            return "该股票代码不存在", ""
+            return "该基金代码不存在", ""
         self.stock1 = pro.daily(ts_code=self.stock1_code, start_date=self.start_date, end_date=self.end_date)
         high = self.stock1['high'].tolist()
         low = self.stock1['low'].tolist()
@@ -129,7 +128,7 @@ class Chart_Plot:
     def plot_pes(self):
         try:
             if not self.stock1_code:
-                return "该股票代码不存在", self.graph_title
+                return "该基金代码不存在", self.graph_title
             if self.index_type == 'LYR':
                 self.stock1 = pro.daily_basic(ts_code=self.stock1_code, start_date=self.start_date,
                                               end_date=self.end_date,
@@ -168,9 +167,9 @@ class Chart_Plot:
         graph_title = "{},{};{},{}--{}".format(self.stock1_code, self.name1,
                                              self.stock2_code, self.name2, self.graph_type)
         if not self.stock1_code:
-            return "该股票代码不存在", graph_title
+            return "该基金代码不存在", graph_title
         if not self.stock2_code:
-            return "该对比股票代码不存在", graph_title
+            return "该对比基金代码不存在", graph_title
         self.stock1 = pro.daily(ts_code=self.stock1_code, start_date=self.start_date, end_date=self.end_date)
         self.stock2 = pro.daily(ts_code=self.stock2_code, start_date=self.start_date, end_date=self.end_date)
 
